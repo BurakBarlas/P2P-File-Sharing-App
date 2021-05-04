@@ -1,17 +1,16 @@
 import socket
 
-serverIP = 'localhost'
-serverPort = 12000
-server_address = (serverIP, serverPort)
+serverPort = 5001
 
 # Create a UDP socket
-clientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-message = input('Input file name :')
+# Bind the socket to the port
+serverSocket.bind(('', serverPort))
+print("The server is ready to receive")
 
-clientSocket.sendto(message.encode("utf-8"),server_address)
-
-modifiedMessage, server = clientSocket.recvfrom(2048)
-print(modifiedMessage.decode("utf-8"))
-
-clientSocket.close()
+while 1:
+    message, clientAddress = serverSocket.recvfrom(2048)
+    print('received {} bytes from {}'.format(len(message), clientAddress))
+    modifiedMessage = message.upper()
+    serverSocket.sendto(modifiedMessage, clientAddress)

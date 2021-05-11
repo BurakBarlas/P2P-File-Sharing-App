@@ -5,7 +5,7 @@ from time import time, sleep
 import json
 
 serverIP = 'localhost'
-serverPort = 5001
+serverPort = 15200
 server_address = (serverIP, serverPort)
 
 # Create a UDP socket
@@ -46,16 +46,19 @@ json_object = json.loads(json_dump)
 
 # Broadcasts all chunks every 60 seconds
 i = 0;
-
-while True:
-    ##sleep(60 - time() % 60)
-    while i<1:
+while i<5:
         temp_chunk_message = json_object["chunks"][i]
         clientSocket.sendto(temp_chunk_message.encode("utf-8"), server_address)
-        modifiedMessage, server = clientSocket.recvfrom(2048)
-        print(modifiedMessage.decode("utf-8"))
         i += 1
-##    i = 0
+#while True:
+#    sleep(60 - time() % 60)
+#    while i<5:
+#        temp_chunk_message = json_object["chunks"][i]
+#        clientSocket.sendto(temp_chunk_message.encode("utf-8"), server_address)
+#        modifiedMessage, server = clientSocket.recvfrom(2048)
+#        print(modifiedMessage.decode("utf-8"))
+#        i += 1
+#    i = 0
     
 
     

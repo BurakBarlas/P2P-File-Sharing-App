@@ -2,7 +2,7 @@ import socket
 import json
 
 # 2.2.0-A
-serverPort = 5001
+serverPort = 15200
 
 # Create a UDP socket
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -16,23 +16,20 @@ contentDictionary = {
     "chunks": []
 }
 
-with open('contentDictionary.txt', 'w') as outfile:
-    json.dump(contentDictionary, outfile)
-
 
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
     print('received {} bytes from {}'.format(len(message), clientAddress))
-
-    # 2.2.0-B
+    print('"{}" : {}'.format(clientAddress, message.decode("utf-8")))
     
+    
+    # 2.2.0-B
+    #contentDictionary = json.loads(message)
+    contentDictionary["chunks"] = message.decode("utf-8")
 
     f = open("contentDictionary.txt", "w")
-    f.write(str(contentDictionary))
-    
-    
     json.dump(contentDictionary, f)
-    contentDictionary["chunks"].push(str(clientAddress))
-
     f.close()
-    print('"{}" : {}'.format(clientAddress, message))
+
+    
+serverSocket.close()

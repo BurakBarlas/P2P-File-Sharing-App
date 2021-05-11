@@ -21,18 +21,18 @@ with open('contentDictionary.txt', 'w') as outfile:
 
 
 while 1:
-    message, clientAddress = serverSocket.recvfrom()
+    message, clientAddress = serverSocket.recvfrom(2048)
     print('received {} bytes from {}'.format(len(message), clientAddress))
 
     # 2.2.0-B
-    contentDictionary = json.load(message)
-    contentDictionary["chunks"].push(clientAddress)
+    
 
-    f = open("contentDictionary.txt", "wb+")
+    f = open("contentDictionary.txt", "w")
     f.write(str(contentDictionary))
+    
+    
+    json.dump(contentDictionary, f)
+    contentDictionary["chunks"].push(str(clientAddress))
+
     f.close()
-
     print('"{}" : {}'.format(clientAddress, message))
-
-    modifiedMessage = message.upper()
-    serverSocket.sendto(modifiedMessage, clientAddress)

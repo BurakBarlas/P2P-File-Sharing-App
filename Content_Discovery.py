@@ -11,28 +11,24 @@ serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
 print("The server is ready to receive")
 
-
-contentDictionary = {
-    "chunks": []
-}
-
+chunks = {}
 
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
     print('received {} bytes from {}'.format(len(message), clientAddress))
     print('"{}" : {}'.format(clientAddress, message.decode("utf-8")))
-    
-    
+
     # 2.2.0-B
-    #contentDictionary = json.loads(message)
-    contentDictionary["chunks"] = message.decode("utf-8")
 
-    contentDictionary = json.loads(message)
-    contentDictionary["chunks"].push(clientAddress)
+    decodedMessage = message.decode("utf-8")
+    if (decodedMessage in chunks):
+        chunks[decodedMessage].append(clientAddress[0])
+    else:
+        chunks[decodedMessage] = [clientAddress[0]]
 
-    f = open("contentDictionary.txt", "w")
-    json.dump(contentDictionary, f)
+    f = open("Content_Dictionary.txt", "w")
+    json.dump(chunks, f)
     f.close()
 
-    
+
 serverSocket.close()

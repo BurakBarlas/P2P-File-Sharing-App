@@ -1,31 +1,17 @@
 import socket
-import requests
 
+
+serverName = 'localhost'
 serverPort = 12000
-serverSocket = socket(socket.AF_INET, socket.SOCK_STREAM)
-serverSocket.bind(('', serverPort))
-serverSocket.listen(1)
-print('The server is ready to receive')
+clientSocket = socket(AF_INET, SOCK_STREAM)
+clientSocket.connect((serverName, serverPort))
+sentence = input('Input lowercase sentence:')
+clientSocket.send(sentence.encode())
+modifiedSentence = clientSocket.recv(1024)
+print(modifiedSentence.decode())
+clientSocket.close()
 
-local_filename = input('Type the filename to download:')
-
-# def download_file(url):
-#     local_filename = url.split('/')[-1]
-#     # NOTE the stream=True parameter below
-#     with requests.get(url, stream=True) as r:
-#         r.raise_for_status()
-#         with open(local_filename, 'wb') as f:
-#             for chunk in r.iter_content(chunk_size=8192):
-#                 # If you have chunk encoded response uncomment if
-#                 # and set chunk_size parameter to None.
-#                 #if chunk:
-#                 f.write(chunk)
-#     return local_filename
-
-
-while 1:
-    connectionSocket, addr = serverSocket.accept()
-    sentence = connectionSocket.recv(1024)
-    capitalizedSentence = sentence.upper()
-    connectionSocket.send(capitalizedSentence)
-    connectionSocket.close()
+if (decodedMessage in chunks):
+        req_ip = chunks[decodedMessage]
+    else:
+        print("peer yok")

@@ -27,6 +27,9 @@ while 1:
     #contentDictionary = json.loads(message)
     contentDictionary["chunks"] = message.decode("utf-8")
 
+    contentDictionary = json.loads(message)
+    contentDictionary["chunks"].push(clientAddress)
+
     f = open("contentDictionary.txt", "w")
     json.dump(contentDictionary, f)
     f.close()

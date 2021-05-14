@@ -12,14 +12,13 @@ server_address = (serverIP, serverPort)
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Calculates size of chunks
-message = input('Write file name:')
 
-content_name = message;
+content_name = 'Forest';
 filename = content_name+'.png'
 c = os.path.getsize(filename)
-print(c)
+#print(c)
 CHUNK_SIZE = math.ceil(math.ceil(c)/5) 
-print(CHUNK_SIZE)
+#print(CHUNK_SIZE)
 
 
 #Seperates the file to chunks
@@ -35,21 +34,30 @@ with open(filename, 'rb') as infile:
 			chunk = infile.read(int(CHUNK_SIZE))
 			chunk_file.close()
 
-chunknames = [content_name+'_1'+'.png',
-              content_name+'_2'+'.png', content_name+'_3'+'.png',
-              content_name+'_4'+'.png', content_name+'_5'+'.png']
+chunknames = [content_name+'_1',
+              content_name+'_2', content_name+'_3',
+              content_name+'_4', content_name+'_5']
 
 chunk_set = {"chunks": [chunknames[0],chunknames[1],chunknames[2],chunknames[3],chunknames[4]]}
+
+
+#print(chunk_set['chunks'])
+with open('Announced_chunks.txt','r') as infile:
+    for line in infile:
+        for word in line.split():
+            chunk_set['chunks'].append(word)
+infile.close()
+#print(chunk_set['chunks'])
+
 json_dump = json.dumps(chunk_set)
 json_object = json.loads(json_dump)
 
 
+#print(str(json_object))
+        
 # Broadcasts all chunks every 60 seconds
-i = 0;
-while i<5:
-        temp_chunk_message = json_object["chunks"][i]
-        clientSocket.sendto(temp_chunk_message.encode("utf-8"), server_address)
-        i += 1
+
+clientSocket.sendto(str(json_object).encode("utf-8"), server_address)
 #while True:
 #    sleep(60 - time() % 60)
 #    while i<5:
@@ -59,7 +67,7 @@ while i<5:
 #        print(modifiedMessage.decode("utf-8"))
 #        i += 1
 #    i = 0
-    
+
 
     
     

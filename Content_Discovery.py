@@ -12,20 +12,41 @@ serverSocket.bind(('', serverPort))
 print("The server is ready to receive")
 
 chunks = {}
+hostedContents = {}
 
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
-    print('received {} bytes from {}'.format(len(message), clientAddress))
-    print('"{}" : {}'.format(clientAddress, message.decode("utf-8")))
+    #print('received {} bytes from {}'.format(len(message), clientAddress))
+    #print('"{}" : {}'.format(clientAddress, message.decode("utf-8")))
 
     # 2.2.0-B
 
-    decodedMessage = message.decode("utf-8")
-    if (decodedMessage in chunks):
-        chunks[decodedMessage].append(clientAddress[0])
-    else:
-        chunks[decodedMessage] = [clientAddress[0]]
-
+    decoded_Message = message.decode("utf-8")
+    
+    
+    temp_eval = eval(decoded_Message)
+    json_dump = json.dumps(temp_eval)
+    json_object = json.loads(json_dump)
+    
+    index = 0
+    print(clientAddress[0], ":")
+    
+    while index < 6:
+        temp_chunk_name = json_object['chunks'][index]
+        print(temp_chunk_name + "  ")
+        hostedContents.setdefault(clientAddress[0], []).append(temp_chunk_name)
+        
+        if (temp_chunk_name in chunks):
+            if (clientAddress[0] in chunks[temp_chunk_name]):
+                pass
+            else:
+                chunks[temp_chunk_name].append(clientAddress[0])
+            
+        else:
+            chunks[temp_chunk_name] = [clientAddress[0]]
+        
+        index += 1
+        
     f = open("Content_Dictionary.txt", "w")
     json.dump(chunks, f)
     f.close()

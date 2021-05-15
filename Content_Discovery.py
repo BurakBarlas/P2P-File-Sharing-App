@@ -31,7 +31,7 @@ while 1:
     index = 0
     print(clientAddress[0], ":")
     
-    while index < 6:
+    while index < len(json_object['chunks']):
         temp_chunk_name = json_object['chunks'][index]
         print(temp_chunk_name + "  ")
         hostedContents.setdefault(clientAddress[0], []).append(temp_chunk_name)

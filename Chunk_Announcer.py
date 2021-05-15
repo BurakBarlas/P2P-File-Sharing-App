@@ -13,7 +13,7 @@ clientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Calculates size of chunks
 
-content_name = 'Forest';
+content_name = 'Server';
 filename = content_name+'.png'
 c = os.path.getsize(filename)
 #print(c)
@@ -42,7 +42,7 @@ chunk_set = {"chunks": [chunknames[0],chunknames[1],chunknames[2],chunknames[3],
 
 
 #print(chunk_set['chunks'])
-with open('Announced_chunks.txt','r') as infile:
+with open('Announced_Chunks.txt','r') as infile:
     for line in infile:
         for word in line.split():
             chunk_set['chunks'].append(word)

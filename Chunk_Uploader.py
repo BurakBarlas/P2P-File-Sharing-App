@@ -19,7 +19,10 @@ while 1:
     json_dump = json.dumps(temp_eval)
     json_object = json.loads(json_dump)
     
-    sending_item = json_object['requested_content']
+    with open(json_object['requested_content']+'.png', 'rb') as infile:
+        sending_item = infile.read()
+    
+    infile.close()
     
     connectionSocket.send(sending_item.encode("utf-8"))
     

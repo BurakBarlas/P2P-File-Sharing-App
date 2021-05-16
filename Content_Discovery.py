@@ -2,7 +2,7 @@ import socket
 import json
 
 # 2.2.0-A
-serverPort = 15200
+serverPort = 5001
 
 # Create a UDP socket
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

@@ -29,7 +29,13 @@ while i < 5:
         clientSocket.connect((json_object[chunknames[i]][j], serverPort))
         clientSocket.send(str(temp_chunks_json).encode())
     
-        modifiedSentence = clientSocket.recv(1024)
+        recieved_message = clientSocket.recv(1024)
+        chunk_info = recieved_message.decode("utf-8")
+        
+        with open(chunknames[i] + '.png', 'wb') as outfile:
+            outfile.write(chunk_info)
+        
+        outfile.close()
         
         clientSocket.close()
         
@@ -42,9 +48,9 @@ while i < 5:
             Successful_Download = False
             
         if Successful_Download == True :
-            print(json_object[chunknames[i]][j] , ' : ' , modifiedSentence.decode("utf-8") + " ( Successful )")
+            print(json_object[chunknames[i]][j] , ' : ' , chunknames[i] + " ( Successful )")
         else:
-            print(json_object[chunknames[i]][j] , ' : ' , modifiedSentence.decode("utf-8") + " ( Retrying from another peer )")
+            print(json_object[chunknames[i]][j] , ' : ' , chunknames[i] + " ( Retrying from another peer )")
             
             if j <= len(json_object[chunknames[i]])-1:
                 j += 1

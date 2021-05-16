@@ -5,7 +5,7 @@ from time import time, sleep
 import json
 
 serverIP = 'localhost'
-serverPort = 15200
+serverPort = 5001
 server_address = (serverIP, serverPort)
 
 # Create a UDP socket

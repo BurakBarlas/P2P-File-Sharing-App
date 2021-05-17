@@ -28,15 +28,15 @@ while i < 5:
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((json_object[chunknames[i]][j], serverPort))
         clientSocket.send(str(temp_chunks_json).encode())
-    
-        recieved_message = clientSocket.recv(1024)
-        chunk_info = recieved_message.decode("utf-8")
         
-        with open(chunknames[i] + '.png', 'wb') as outfile:
-            outfile.write(chunk_info)
+        temp_chunk_info = clientSocket.recv(1024)
         
+        while len(temp_chunk_info) % 1024 == 0:
+            temp_chunk_info += clientSocket.recv(1024)
+            
+        with open(chunknames[i] + '.png', 'wb+') as outfile:
+                outfile.write(temp_chunk_info)
         outfile.close()
-        
         clientSocket.close()
         
         try:
@@ -64,13 +64,12 @@ while i < 5:
     infile.close()
 
 
-
 try:
-    with open('Forest' + '.png', 'wb') as outfile:
-    	for chunk in chunknames: 
-		    with open(chunk + '.png', 'rb') as infile: 
-			    outfile.write(infile.read() )
-		    infile.close()
+    with open(req_message + '.png', 'wb') as outfile:
+        for chunk in chunknames: 
+            with open(chunk + '.png', 'rb') as infile: 
+                outfile.write(infile.read() )
+            infile.close()
     print("Download successful.")
     
 except:
